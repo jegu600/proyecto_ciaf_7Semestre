@@ -123,10 +123,6 @@
 			<br/><a href="../../access.php"><img src='../../img/atras.png' width="72" height="72" title="Regresar" /></a>
 		</center>
 
-		<button id="btnDelete" type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal" >
-				Launch
-		</button> 
-
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -141,7 +137,7 @@
 		
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary">Aceptar</button>
+					<button type="submit" class="btn btn-primary" onClick="validar(true)">Aceptar</button>
 				</div>
 			</form>
 		</div>
@@ -152,6 +148,11 @@
 <script>
 function obtenerCod(codigo) {
   document.getElementById("codigoInput").value = codigo;
+}
+
+function validar (valor){
+if (valor) alert('Se ha eliminado el registo');
+
 }
 </script>	
 
