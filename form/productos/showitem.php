@@ -27,6 +27,8 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 		<script src="https://kit.fontawesome.com/fed2435e21.js" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 	</head>
     <body>
     	
@@ -61,7 +63,7 @@
 	$query = " SELECT * FROM productos WHERE (estado_prod = 1) AND (cod_pro LIKE '%".$cod_pro."%') AND (nom_pro LIKE '%".$nom_pro."%') ORDER BY nom_pro ASC";
 	$res = $mysqli->query($query);
 	$num_registros = mysqli_num_rows($res);
-	$resul_x_pagina = 50;
+	$resul_x_pagina = 10;
 
 	echo "<div class='flex'>
 			<div class='box'>
@@ -94,16 +96,16 @@
 		echo '
 					<tr>
 						<td data-label="No.">'.($i + (($paginacion->get_page() - 1) * $resul_x_pagina)).'</td>
-						<td data-label="CODIGO">'.$row['cod_pro'].'</td>
+						<td id="codigoProducto" data-label="CODIGO">'.$row['cod_pro'].'</td>
 						<td data-label="NOMBRES ">'.$row['nom_pro'].'</td>
 						<td data-label="PRECIO">'.$row['precio_prod'].'</td>
 						<td data-label="TELEFONO">'.$row['catg_pro'].'</td>
 						<td data-label="FECHA">'.$row['fecha_pro'].'</td>
 						<td data-label="EDIT"><a href="editem.php?cod_pro='.$row['cod_pro'].'"><img src="../../img/editar.png" width=20 heigth=20></td>
 						<td data-label="DELETE"> 
-							<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-							Launch
-							</button>
+							<button id="btnDelete" onclick="obtenerCod('.$row['cod_pro'].')" type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal" >
+								Deltete
+							</button> 
 						</td>
 					</tr>';
 		$i++;
@@ -121,36 +123,38 @@
 			<br/><a href="../../access.php"><img src='../../img/atras.png' width="72" height="72" title="Regresar" /></a>
 		</center>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
+		<button id="btnDelete" type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal" >
+				Launch
+		</button> 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action='delete.php' method="POST">	
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">¿ Desea eliminar el registro ?</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				
+				<input id="codigoInput" type="hidden" value="" name="codigoB">
+		
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-primary">Aceptar</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
-	<!-- <script>
-		const myModal = document.getElementById('myModal')
-		const myInput = document.getElementById('myInput')
 
-		myModal.addEventListener('shown.bs.modal', () => {
-		myInput.focus()
-		})
-	</script>	 -->
-	</body>
+
+<script>
+function obtenerCod(codigo) {
+  document.getElementById("codigoInput").value = codigo;
+}
+</script>	
+
+
+</body>
 </html>
